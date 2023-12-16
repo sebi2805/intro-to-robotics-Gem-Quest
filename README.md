@@ -59,7 +59,7 @@ Learn more about Gem Quest and its development at [thegemquest.xyz](http://thege
 
 ## Video Demonstration
 
-[Watch Gem Quest in action here!](URL-to-your-YouTube-video)
+[Watch Gem Quest in action here!](https://youtu.be/nOXUbVnMvQQ)
 
 ## Join the Quest
 
