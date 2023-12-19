@@ -185,9 +185,10 @@ const int maxLcdBrightness = 255;
 
 const int introDuration = 3000;
 
-const int treasureKillTime = 20000;
+int treasureKillTime = 20000;
 
 const int lcdUpdateTime = 500;
+
 // Constants for treasure point calculation
 const int maxDeduction = 40;
 const int basePoints = 50;
@@ -366,9 +367,9 @@ int lastJoystickState = joystickCenter; // Center position
 unsigned long lastMoveTime = 0;
 
 // Display and Brightness Variables
-int lcdBrightness = maxLcdBrightness;                // Starting brightness value
-MenuOptions brightnessSelection = unknownMenuOption; // 0 for adjusting brightness, 1 for 'Save', 2 for 'Cancel'
-int matrixBrightness = maxMatrixBrightness;          // Default value
+int lcdBrightness = maxLcdBrightness; // Starting brightness value
+MenuOptions brightnessSelection = unknownMenuOption;
+int matrixBrightness = maxMatrixBrightness; // Default value
 
 int lastLcdBrightness = -1;
 int lastMatrixBrightness = -1;
@@ -514,6 +515,7 @@ void setup()
     lcd.createChar(4, starChar);
 
     // Initialize player settings
+    // I can create constant variables for this but I think this is too extra already
     player.x = 3;
     player.y = 3;
     player.points = 0;
@@ -676,7 +678,7 @@ void updateLCDBrightness()
         }
         else
         {
-            lcdBrightness = min(lcdBrightness + 1, 255);
+            lcdBrightness = min(lcdBrightness + 1, maxLcdBrightness);
         }
 
         applyLCDBrightness(); // Apply the brightness to the LCD immediately
@@ -686,7 +688,7 @@ void updateLCDBrightness()
     {
         brightnessSelection = menuSave; // Select "Save"
     }
-    else if (joystickX > 1023 - joystickThreshold)
+    else if (joystickX > joyStickUpperThreshold - joystickThreshold)
     {
         brightnessSelection = menuCancel; // Select "Cancel"
     }
@@ -1205,6 +1207,7 @@ int countUncollectedTreasures()
     }
     return uncollectedCount;
 }
+
 void checkTreasureCollection()
 {
     unsigned long currentMillis = millis();
@@ -1223,7 +1226,7 @@ void checkTreasureCollection()
 
         if (!treasures[i].isKilled && currentMillis > treasures[i].killTime && !treasures[i].isCollected)
         {
-
+            treasureKillTime -= 4000;
             playSound(allTreasuresKilledSound);
             treasures[i].isKilled = true;
             treasures[i].isVisible = false;
